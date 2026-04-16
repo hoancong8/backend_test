@@ -2,16 +2,15 @@
 Mô tả
 -------
 `backend_test` là một Web API đơn giản bằng ASP.NET Core (net8.0) tổ chức theo tách lớp (Domain / Application / Infrastructure / Api). Dự án sử dụng MySQL (Pomelo), JWT authentication, và Swagger để test API.
-
-test/
-├── src/                        — mã nguồn chính của ứng dụng.
+Test/
+├── src/
 │   ├── Test.Domain/            # 🧠 Tầng Nghiệp vụ (Core - Không phụ thuộc)
 │   │   ├── Entities/           # User.cs, Project.cs, ...
 │   │   ├── Exceptions/         # Custom domain exceptions
 │   │   ├── Interfaces/         # IRepository, IDomainServices
 │   │   ├── ValueObjects/       # Email, Money, ...
 │   │   └── Common/             # BaseEntity, Audit
-│   │
+│
 │   ├── Test.Application/       # ⚙️ Tầng Ứng dụng (Use Cases)
 │   │   ├── UseCases/           # Commands & Queries (CQRS)
 │   │   │   ├── Auth/           # Register, Login, v.v.
@@ -20,7 +19,7 @@ test/
 │   │   ├── Mappings/           # AutoMapper/Mapster profiles
 │   │   ├── Validators/         # FluentValidation rules
 │   │   └── Behaviors/          # MediatR pipelines (Logging, Validation)
-│   │
+│
 │   ├── Test.Infrastructure/    # 💾 Tầng Hạ tầng (Data & Services)
 │   │   ├── Persistence/        # EF Core: AppDbContext, Configurations
 │   │   │   ├── Configurations/ # Fluent API entity maps
@@ -28,7 +27,7 @@ test/
 │   │   │   └── Repositories/   # Implementations của interfaces
 │   │   ├── Services/           # EmailService, FileStorage, v.v.
 │   │   └── Identity/           # JWT config, role setup
-│   │
+│
 │   ├── Test.Api/               # 🌐 Tầng Trình diễn (Web API)
 │   │   ├── Controllers/        # API endpoints (AuthController.cs)
 │   │   ├── Middlewares/        # ExceptionMiddleware, Logging
@@ -40,7 +39,6 @@ test/
 │   ├── Test.UnitTests/
 │   └── Test.IntegrationTests/
 └── test.sln / test.csproj      # Solution / project files
-
 Yêu cầu
 --------
 - .NET SDK 8.0
