@@ -15,6 +15,7 @@ namespace test.src.Test.Domain.Interfaces
         Task<User?> GetProfile();
         Task<string> DeleteByUsername(string username);
         Task<string> UpdateProfile(string userId, UserRequest user);
+        Task<string> CheckName(string name);
         Task Add(User user);
     }
 }

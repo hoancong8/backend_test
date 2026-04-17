@@ -70,6 +70,12 @@ namespace test.src.Test.Infrastructure.Repositories
 
             return "Cập nhật thành công";
         }
+        public async Task<string> CheckName(string name)
+        {
+            var exsits = await _context.Users.FirstOrDefaultAsync(x => x.FirstName == name);
+            if (exsits != null) return "Tên đã tồn tại";
+            
+        }
         public Task<User?> GetProfile()
         {
             throw new NotImplementedException();
