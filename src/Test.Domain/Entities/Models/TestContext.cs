@@ -69,6 +69,10 @@ public partial class TestContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Comments_Users");
+            entity.HasOne(d => d.ParentComment)
+                .WithMany(p => p.Replies)
+                .HasForeignKey(d => d.ParentCommentId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Efmigrationshistory>(entity =>
@@ -119,7 +123,7 @@ public partial class TestContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("datetime");
-            
+
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("current_timestamp()")
@@ -127,7 +131,7 @@ public partial class TestContext : DbContext
             entity.Property(e => e.UserId)
                 .UseCollation("ascii_general_ci")
                 .HasCharSet("ascii");
-            
+
 
             entity.HasOne(d => d.User).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.UserId)

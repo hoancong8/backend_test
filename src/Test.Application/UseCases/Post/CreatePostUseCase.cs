@@ -42,6 +42,16 @@ namespace test.src.Test.Application.UseCases.Post
                     videoUrls.Add(url);
                 }
             }
+
+            if (string.IsNullOrEmpty(req.Content) && imageUrls.Count == 0 && videoUrls.Count == 0)
+            {
+                return new ApiResponse<object>
+                {
+                    success = false,
+                    message = "Vui lòng cung cấp nội dung hoặc ít nhất một hình ảnh/video cho bài đăng",
+                    data = null
+                };
+            }
             var postId = Guid.NewGuid();
 
             var model = new Models.Post

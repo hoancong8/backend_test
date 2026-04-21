@@ -61,11 +61,13 @@ obj/Debug/net8.0/
 Program.cs
 src/Test.Api/Controllers/
  AuthController.cs
+ CommentController.cs
  PostsController.cs
  SeedController.cs
 src/
  Test.Api/Middlewares/ExceptionMiddleware.cs
  Test.Application/Dtos/
+  CreateCommentRequest.cs
   CreatePostRequest.cs
   LoginRequest.cs
   UserRequest.cs
@@ -78,7 +80,9 @@ src/
   UseCases/Auth/
    LoginUseCase.cs
    RegisterUseCase.cs
-  UseCases/Post/CreatePostUseCase.cs
+  UseCases/
+   Comment/CreateCommentUseCase.cs
+   Post/CreatePostUseCase.cs
  Test.Domain/Entities/Models/
   Comment.cs
   Efmigrationshistory.cs
@@ -94,6 +98,7 @@ src/
   Product.cs
   User.cs
  Test.Domain/Interfaces/
+  ICommentRepository.cs
   IPostRepository.cs
   IUserRepository.cs
  Test.Domain/ultit/
@@ -106,6 +111,7 @@ src/
  Test.Infrastructure/
   Persistence/AppDbContext.cs
   Repositories/
+   CommentRepository.cs
    PostRepository.cs
    UserRepository.cs
   services/CloudinaryService.cs

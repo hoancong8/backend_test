@@ -14,6 +14,7 @@ using test.Models;
 using test.src.Test.Infrastructure.Repositories;
 using test.src.Test.Application.UseCases.Post;
 using test.src.Test.Infrastructure.services;
+using test.src.Test.Application.UseCases.Comment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,8 @@ builder.Services.AddScoped<GetProfileUseCase>();
 builder.Services.AddScoped<DeleteAccountUseCase>();
 builder.Services.AddScoped<UpdateProfileUseCase>();
 builder.Services.AddScoped<CreatePostUseCase>();
+builder.Services.AddScoped<CreateCommentUseCase>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddSingleton<CloudinaryService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

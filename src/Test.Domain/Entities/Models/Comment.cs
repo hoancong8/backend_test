@@ -15,7 +15,14 @@ public partial class Comment
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual Post Post { get; set; } = null!;
+    public Guid? ParentCommentId { get; set; } // 🔥 FK
 
+    public string? ImageUrl { get; set; }
+    // 🔥 navigation bình thường
+    public virtual Post Post { get; set; } = null!;
     public virtual User User { get; set; } = null!;
+
+    // 🔥 self-reference
+    public virtual Comment? ParentComment { get; set; }   // cha
+    public virtual ICollection<Comment> Replies { get; set; } = new List<Comment>(); // con
 }
