@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,9 @@ using test.src.Test.Application.UseCases.Account;
 using test.src.Test.Application.UseCases.Auth;
 using test.src.Test.Domain.Interfaces;
 using test.src.Test.Domain.ultit;
+using test.src.Test.GenData;
 using test.src.Test.Infrastructure.Persistence;
+using test.Models;
 using test.src.Test.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +21,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = "server=localhost;database=test;user=root;password=;";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
+
+// Also register TestContext (scaffolded context) so we can use it directly
+builder.Services.AddDbContext<TestContext>(options =>
     options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
 
 // 🔗 DI
@@ -38,8 +45,8 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Test API",
-        Version = "v1"
+        Title = "Test siêu API",
+        Version = "v10000000"
     });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -84,6 +91,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<TestContext>();
+    try
+    {
+        // Ensure DB exists (do not auto-seed to avoid unhandled runtime errors)
+        context.Database.EnsureCreated();
+        Console.WriteLine("[Seed] Database ensured.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Seed] EnsureCreated failed: {ex.Message}");
+    }
+}
 app.UseMiddleware<ExceptionMiddleware>(); 
 
 // Lưu ý: app.UseSwagger() phải nằm trước Authentication/Authorization

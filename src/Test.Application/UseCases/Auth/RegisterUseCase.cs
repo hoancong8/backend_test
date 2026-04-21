@@ -33,7 +33,7 @@ namespace test.src.Test.Application.UseCases.Auth
                 return new ApiResponse<object>
                 {
                     success = false,
-                    message = "Email must be a valid Gmail address",
+                    message = "Email đăng ký không hợp lệ. Vui lòng sử dụng email có định dạng @gmail.com",
                     data = null
                 };
             }

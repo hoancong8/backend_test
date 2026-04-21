@@ -29,9 +29,14 @@ namespace test.src.Test.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.PasswordHash))
+            {
+                return BadRequest(new { message = "Email and password are required" });
+            }
+
             var result = await _useCase.Execute(
-                request.Email,
-                request.PasswordHash,
+                request.Email!,
+                request.PasswordHash!,
                 request.FirstName,
                 request.LastName,
                 request.PhoneNumber,
@@ -43,7 +48,12 @@ namespace test.src.Test.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            var result = await _loginUseCase.Excute(request.Email, request.Password);
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest(new { message = "Email and password are required" });
+            }
+
+            var result = await _loginUseCase.Excute(request.Email!, request.Password!);
             return Ok(result);
         }
 
@@ -52,8 +62,10 @@ namespace test.src.Test.Api.Controllers
         public async Task<IActionResult> GetProfile()
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrWhiteSpace(userId)) return Unauthorized();
+
             Console.WriteLine($"User ID from token: {userId}");
-            var infoUser =await _getProfileUseCase.Execute(userId);
+            var infoUser = await _getProfileUseCase.Execute(userId);
             return Ok(infoUser);
         }
 
@@ -62,6 +74,8 @@ namespace test.src.Test.Api.Controllers
         public async Task<IActionResult> DeleteAccount()
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrWhiteSpace(userId)) return Unauthorized();
+
             var resultDelete = await _deleteAccountUseCase.Execute(userId);
             return Ok(resultDelete);
         }
@@ -72,6 +86,8 @@ namespace test.src.Test.Api.Controllers
         public async Task<IActionResult> UpdateProfile(UserRequest request)
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrWhiteSpace(userId)) return Unauthorized();
+
             var resultUpdate = await _updateProfileUseCase.execute(userId, request);
             return Ok(resultUpdate);
         }

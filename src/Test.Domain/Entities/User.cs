@@ -14,5 +14,6 @@ namespace test.src.Test.Domain.Entities
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? AvatarUrl { get; set; }
+        public int Role { get; set; } = 1; // 0: admin, 1: user
     }
 }

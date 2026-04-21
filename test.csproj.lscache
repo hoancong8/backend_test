@@ -61,30 +61,49 @@ obj/Debug/net8.0/
  test.AssemblyInfo.cs
  test.GlobalUsings.g.cs
 Program.cs
-src/Test.Api/
- Controllers/AuthController.cs
- Middlewares/ExceptionMiddleware.cs
-src/Test.Application/Dtos/
- LoginRequest.cs
- UserRequest.cs
-src/Test.Application/
- Responses/ApiResponse.cs
- UseCases/Account/
-  DeleteAccountUseCase.cs
-  GetProfileUseCase.cs
-  UpdateProfileUseCase.cs
- UseCases/Auth/
-  LoginUseCase.cs
-  RegisterUseCase.cs
-src/Test.Domain/
- Entities/User.cs
- Interfaces/IUserRepository.cs
- ultit/
-  JwtService.cs
-  PasswordHelper.cs
-src/Test.Infrastructure/
- Persistence/AppDbContext.cs
- Repositories/UserRepository.cs
+src/Test.Api/Controllers/
+ AuthController.cs
+ SeedController.cs
+src/
+ Test.Api/Middlewares/ExceptionMiddleware.cs
+ Test.Application/Dtos/
+  LoginRequest.cs
+  UserRequest.cs
+ Test.Application/
+  Responses/ApiResponse.cs
+  UseCases/Account/
+   DeleteAccountUseCase.cs
+   GetProfileUseCase.cs
+   UpdateProfileUseCase.cs
+  UseCases/Auth/
+   LoginUseCase.cs
+   RegisterUseCase.cs
+ Test.Domain/Entities/Models/
+  Comment.cs
+  Efmigrationshistory.cs
+  Like.cs
+  Post.cs
+  Postimage.cs
+  Postvideo.cs
+  Product.cs
+  Tag.cs
+  TestContext.cs
+  User.cs
+ Test.Domain/Entities/
+  Product.cs
+  User.cs
+ Test.Domain/
+  Interfaces/IUserRepository.cs
+  ultit/
+   JwtService.cs
+   PasswordHelper.cs
+ Test.GenData/
+  GenAll.cs
+  GenProduct.cs
+  GenUser.cs
+ Test.Infrastructure/
+  Persistence/AppDbContext.cs
+  Repositories/UserRepository.cs
 WeatherForecast.cs
 
 [metadataReferences]
@@ -393,6 +412,7 @@ WeatherForecast.cs
  WindowsBase.dll
 <NUGET>/
  bcrypt.net-next/4.1.0/lib/netstandard2.1/BCrypt.Net-Next.dll
+ bogus/35.6.5/lib/net6.0/Bogus.dll
  microsoft.aspnetcore.authentication.jwtbearer/8.0.0/lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
  microsoft.aspnetcore.openapi/8.0.0/lib/net8.0/Microsoft.AspNetCore.OpenApi.dll
  microsoft.entityframeworkcore.abstractions/8.0.0/lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll

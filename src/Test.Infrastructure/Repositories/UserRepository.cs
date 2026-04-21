@@ -63,7 +63,6 @@ namespace test.src.Test.Infrastructure.Repositories
             if (!string.IsNullOrEmpty(request.LastName)) user.LastName = request.LastName;
             if (!string.IsNullOrEmpty(request.PhoneNumber)) user.PhoneNumber = request.PhoneNumber;
             if (!string.IsNullOrEmpty(request.AvatarUrl)) user.AvatarUrl = request.AvatarUrl;
-
             // 3. EF sẽ tự so sánh, trường nào giá trị mới giống hệt giá trị cũ 
             // thì nó cũng sẽ không đưa vào câu lệnh SQL UPDATE.
             await _context.SaveChangesAsync();
@@ -74,7 +73,7 @@ namespace test.src.Test.Infrastructure.Repositories
         {
             var exsits = await _context.Users.FirstOrDefaultAsync(x => x.FirstName == name);
             if (exsits != null) return "Tên đã tồn tại";
-            
+            return "Tên hợp lệ";
         }
         public Task<User?> GetProfile()
         {
