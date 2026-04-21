@@ -3,17 +3,17 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models; // <-- PHẢI CÓ DÒNG NÀY
+using Microsoft.OpenApi.Models; 
 using test.src.Test.Api.Middlewares;
 using test.src.Test.Application.UseCases.Account;
 using test.src.Test.Application.UseCases.Auth;
 using test.src.Test.Domain.Interfaces;
 using test.src.Test.Domain.ultit;
-using test.src.Test.GenData;
 using test.src.Test.Infrastructure.Persistence;
 using test.Models;
 using test.src.Test.Infrastructure.Repositories;
+using test.src.Test.Application.UseCases.Post;
+using test.src.Test.Infrastructure.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,12 +30,14 @@ builder.Services.AddDbContext<TestContext>(options =>
 // 🔗 DI
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<test.src.Test.Domain.Interfaces.IPostRepository, test.src.Test.Infrastructure.Repositories.PostRepository>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<RegisterUseCase>();
 builder.Services.AddScoped<GetProfileUseCase>();
 builder.Services.AddScoped<DeleteAccountUseCase>();
 builder.Services.AddScoped<UpdateProfileUseCase>();
-
+builder.Services.AddScoped<CreatePostUseCase>();
+builder.Services.AddSingleton<CloudinaryService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 

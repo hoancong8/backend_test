@@ -9,10 +9,6 @@ public partial class Post
 
     public string? Content { get; set; }
 
-    public string? ImageUrl { get; set; }
-
-    public string? VideoUrl { get; set; }
-
     public Guid UserId { get; set; }
 
     public DateTime? CreatedAt { get; set; }

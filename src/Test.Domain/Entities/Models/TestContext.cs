@@ -119,7 +119,7 @@ public partial class TestContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("datetime");
-            entity.Property(e => e.ImageUrl).HasMaxLength(500);
+            
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("current_timestamp()")
@@ -127,7 +127,7 @@ public partial class TestContext : DbContext
             entity.Property(e => e.UserId)
                 .UseCollation("ascii_general_ci")
                 .HasCharSet("ascii");
-            entity.Property(e => e.VideoUrl).HasMaxLength(500);
+            
 
             entity.HasOne(d => d.User).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.UserId)
