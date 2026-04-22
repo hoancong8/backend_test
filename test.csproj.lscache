@@ -67,10 +67,12 @@ src/Test.Api/Controllers/
 src/
  Test.Api/Middlewares/ExceptionMiddleware.cs
  Test.Application/Dtos/
-  CreateCommentRequest.cs
-  CreatePostRequest.cs
-  LoginRequest.cs
-  UserRequest.cs
+  reponse/PostReponse.cs
+  request/
+   CreateCommentRequest.cs
+   CreatePostRequest.cs
+   LoginRequest.cs
+   UserRequest.cs
  Test.Application/
   Responses/ApiResponse.cs
   UseCases/Account/
@@ -80,12 +82,16 @@ src/
   UseCases/Auth/
    LoginUseCase.cs
    RegisterUseCase.cs
-  UseCases/
-   Comment/CreateCommentUseCase.cs
-   Post/CreatePostUseCase.cs
+  UseCases/Comment/
+   CreateCommentUseCase.cs
+   GetCommentUseCase.cs
+  UseCases/PostUseCase/
+   CreatePostUseCase.cs
+   RecommendPostUseCase.cs
  Test.Domain/Entities/Models/
   Comment.cs
   Efmigrationshistory.cs
+  Friendship.cs
   Like.cs
   Post.cs
   Postimage.cs

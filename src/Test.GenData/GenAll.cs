@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
-using test.Models;
+using test.src.Test.Domain.Entities.Models;
 
 namespace test.src.Test.GenData
 {
@@ -26,7 +26,7 @@ namespace test.src.Test.GenData
                 .RuleFor(u => u.AvatarUrl, f => f.Internet.Avatar())
                 .RuleFor(u => u.PasswordHash, f => BCrypt.Net.BCrypt.HashPassword("123456"));
 
-            var users = userFaker.Generate(50);
+            var users = userFaker.Generate(20);
             await context.Users.AddRangeAsync(users);
             await context.SaveChangesAsync();
 
@@ -76,7 +76,6 @@ namespace test.src.Test.GenData
                         ImageUrl = faker.Image.PicsumUrl()
                     });
                 }
-
                 for (int i = 0; i < vidCount; i++)
                 {
                     videos.Add(new Postvideo

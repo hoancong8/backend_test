@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
-using test.Models;
+using test.src.Test.Domain.Entities.Models;
 
 namespace test.src.Test.GenData
 {

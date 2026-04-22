@@ -51,6 +51,10 @@ Nếu bạn gặp lỗi, đảm bảo đang chạy lệnh từ thư mục chứa
 dotnet run --project test.csproj
 ```
 
+6. lệnh gen mnodel db
+```
+dotnet ef dbcontext scaffold "server=localhost;database=test;user=root;password=;" Pomelo.EntityFrameworkCore.MySql -o src/Test.Domain/Entities/Models -f
+```
 Hoặc chỉ `dotnet run` nếu đang ở thư mục gốc.
 
 Sau khi chạy, mở Swagger tại `http://localhost:5000/swagger` (mặc định port có thể khác — xem output khi `dotnet run`).

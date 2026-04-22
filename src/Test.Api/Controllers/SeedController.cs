@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using test.src.Test.Domain.Entities.Models;
 using test.src.Test.GenData;
-using test.Models;
 
 namespace test.src.Test.Api.Controllers
 {

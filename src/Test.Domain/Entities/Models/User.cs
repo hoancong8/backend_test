@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace test.Models;
+namespace test.src.Test.Domain.Entities.Models;
 
 public partial class User
 {
@@ -28,6 +28,10 @@ public partial class User
     public int? Role { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+    public virtual ICollection<Friendship> FriendshipAddressees { get; set; } = new List<Friendship>();
+
+    public virtual ICollection<Friendship> FriendshipRequesters { get; set; } = new List<Friendship>();
 
     public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
 

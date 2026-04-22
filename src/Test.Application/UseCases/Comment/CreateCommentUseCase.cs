@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+
 using test.src.Test.Application.Dtos;
 using test.src.Test.Application.Responses;
 using test.src.Test.Domain.Interfaces;
@@ -37,7 +35,7 @@ namespace test.src.Test.Application.UseCases.Comment
                     return new ApiResponse<object>
                     {
                         success = false,
-                        message = "Bình luận cha không tồn tại",
+                        message = "Bình luận không tồn tại",
                         data = null
                     };
                 }
@@ -64,7 +62,7 @@ namespace test.src.Test.Application.UseCases.Comment
                     };
                 }
             }
-            var comment = new Models.Comment
+            var comment = new test.src.Test.Domain.Entities.Models.Comment
             {
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,

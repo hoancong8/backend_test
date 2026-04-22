@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace test.Models;
+namespace test.src.Test.Domain.Entities.Models;
 
 public partial class TestContext : DbContext
 {
@@ -19,6 +19,8 @@ public partial class TestContext : DbContext
     public virtual DbSet<Comment> Comments { get; set; }
 
     public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; }
+
+    public virtual DbSet<Friendship> Friendships { get; set; }
 
     public virtual DbSet<Like> Likes { get; set; }
 
@@ -58,6 +60,10 @@ public partial class TestContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("datetime");
+            entity.Property(e => e.ImageUrl).HasMaxLength(500);
+            entity.Property(e => e.ParentCommentId)
+                .UseCollation("ascii_general_ci")
+                .HasCharSet("ascii");
             entity.Property(e => e.UserId)
                 .UseCollation("ascii_general_ci")
                 .HasCharSet("ascii");
@@ -69,10 +75,6 @@ public partial class TestContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Comments_Users");
-            entity.HasOne(d => d.ParentComment)
-                .WithMany(p => p.Replies)
-                .HasForeignKey(d => d.ParentCommentId)
-                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Efmigrationshistory>(entity =>
@@ -83,6 +85,43 @@ public partial class TestContext : DbContext
 
             entity.Property(e => e.MigrationId).HasMaxLength(150);
             entity.Property(e => e.ProductVersion).HasMaxLength(32);
+        });
+
+        modelBuilder.Entity<Friendship>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("friendships");
+
+            entity.HasIndex(e => e.AddresseeId, "FK_Friendships_Addressee");
+
+            entity.HasIndex(e => new { e.RequesterId, e.AddresseeId }, "RequesterId").IsUnique();
+
+            entity.Property(e => e.Id)
+                .UseCollation("ascii_general_ci")
+                .HasCharSet("ascii");
+            entity.Property(e => e.AddresseeId)
+                .UseCollation("ascii_general_ci")
+                .HasCharSet("ascii");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("datetime");
+            entity.Property(e => e.RequesterId)
+                .UseCollation("ascii_general_ci")
+                .HasCharSet("ascii");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'Pending'")
+                .HasColumnType("enum('Pending','Accepted','Rejected')");
+
+            entity.HasOne(d => d.Addressee).WithMany(p => p.FriendshipAddressees)
+                .HasForeignKey(d => d.AddresseeId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Friendships_Addressee");
+
+            entity.HasOne(d => d.Requester).WithMany(p => p.FriendshipRequesters)
+                .HasForeignKey(d => d.RequesterId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Friendships_Requester");
         });
 
         modelBuilder.Entity<Like>(entity =>
@@ -123,7 +162,6 @@ public partial class TestContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("datetime");
-
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("current_timestamp()")
@@ -131,7 +169,6 @@ public partial class TestContext : DbContext
             entity.Property(e => e.UserId)
                 .UseCollation("ascii_general_ci")
                 .HasCharSet("ascii");
-
 
             entity.HasOne(d => d.User).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.UserId)

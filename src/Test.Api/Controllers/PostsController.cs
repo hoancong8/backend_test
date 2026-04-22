@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using test.src.Test.Application.Dtos;
-using test.src.Test.Domain.Interfaces;
-using test.Models;
-using test.src.Test.Application.UseCases.Auth;
 using test.src.Test.Application.UseCases.Post;
+using test.src.Test.Application.UseCases.PostUseCase;
 
 namespace test.src.Test.Api.Controllers
 {
@@ -16,10 +14,12 @@ namespace test.src.Test.Api.Controllers
     public class PostsController : ControllerBase
     {
         private readonly CreatePostUseCase _useCase;
+        private readonly RecommendPostUseCase _rcmUseCase;
 
-        public PostsController(CreatePostUseCase useCase)
+        public PostsController(CreatePostUseCase useCase, RecommendPostUseCase rcmUseCase)
         {
             _useCase = useCase;
+            _rcmUseCase = rcmUseCase;
         }
 
         [HttpPost("create-post")]
@@ -30,8 +30,23 @@ namespace test.src.Test.Api.Controllers
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
             if (!Guid.TryParse(userId, out var userIdGuid)) return Unauthorized();
-            var result  = await _useCase.Execute(userIdGuid, req);
+            var result = await _useCase.Execute(userIdGuid, req);
             return Ok(result);
         }
+
+
+        [HttpPost("recommend-post")]
+        [Authorize]
+        public async Task<IActionResult> recommend()
+        {
+            var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            if (!Guid.TryParse(userId, out var userIdGuid)) return Unauthorized();
+            var result = await _rcmUseCase.execute(userId, 10);
+            return Ok(result);
+        }
+
     }
+
 }

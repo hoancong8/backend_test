@@ -14,19 +14,28 @@ namespace test.src.Test.Api.Controllers
     public class CommentController
     {
         private readonly CreateCommentUseCase _createCommentUseCase;
-        public CommentController(CreateCommentUseCase createCommentUseCase)
+        private readonly GetCommentUseCase _getCommentUseCase;
+        public CommentController(CreateCommentUseCase createCommentUseCase,GetCommentUseCase getCommentUseCase)
         {
             _createCommentUseCase = createCommentUseCase;
+            _getCommentUseCase = getCommentUseCase;
         }
-       
+
         [HttpPost("create-comment")]
         [Authorize]
         public async Task<IActionResult> CreateComment([FromForm] CreateCommentRequest req)
         {
-            
+
             var result = await _createCommentUseCase.Execute(req);
             return new JsonResult(result);
         }
+        [HttpPost("get-comment")]
+        // [Authorize]
+        public async Task<IActionResult> GetComment(string postId,int limit)
+        {
 
+            var result = await _getCommentUseCase.execute(postId,limit);
+            return new JsonResult(result);
+        }
     }
 }

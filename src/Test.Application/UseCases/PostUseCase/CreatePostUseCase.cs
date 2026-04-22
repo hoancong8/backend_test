@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using test.Models;
 using test.src.Test.Application.Responses;
+using test.src.Test.Domain.Entities.Models;
 using test.src.Test.Domain.Interfaces;
 using test.src.Test.Infrastructure.services;
 
-namespace test.src.Test.Application.UseCases.Post
+namespace test.src.Test.Application.UseCases.PostUseCase
 {
     public class CreatePostUseCase
     {
@@ -54,7 +54,7 @@ namespace test.src.Test.Application.UseCases.Post
             }
             var postId = Guid.NewGuid();
 
-            var model = new Models.Post
+            var model = new Domain.Entities.Models.Post
             {
                 Id = postId,
                 Content = req.Content,

@@ -10,11 +10,14 @@ using test.src.Test.Application.UseCases.Auth;
 using test.src.Test.Domain.Interfaces;
 using test.src.Test.Domain.ultit;
 using test.src.Test.Infrastructure.Persistence;
-using test.Models;
+
 using test.src.Test.Infrastructure.Repositories;
-using test.src.Test.Application.UseCases.Post;
 using test.src.Test.Infrastructure.services;
 using test.src.Test.Application.UseCases.Comment;
+using test.src.Test.GenData;
+using test.src.Test.Domain.Entities.Models;
+using test.src.Test.Application.UseCases.PostUseCase;
+using test.src.Test.Application.UseCases.Post;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +42,8 @@ builder.Services.AddScoped<DeleteAccountUseCase>();
 builder.Services.AddScoped<UpdateProfileUseCase>();
 builder.Services.AddScoped<CreatePostUseCase>();
 builder.Services.AddScoped<CreateCommentUseCase>();
+builder.Services.AddScoped<RecommendPostUseCase>();
+builder.Services.AddScoped<GetCommentUseCase>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddSingleton<CloudinaryService>();
 builder.Services.AddControllers();
@@ -104,6 +109,7 @@ using (var scope = app.Services.CreateScope())
         // Ensure DB exists (do not auto-seed to avoid unhandled runtime errors)
         context.Database.EnsureCreated();
         Console.WriteLine("[Seed] Database ensured.");
+        await GenAll.SeedAll(context);
     }
     catch (Exception ex)
     {

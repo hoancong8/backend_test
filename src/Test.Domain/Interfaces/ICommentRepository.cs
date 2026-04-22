@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using test.Models;
+using test.src.Test.Domain.Entities.Models;
 
 namespace test.src.Test.Domain.Interfaces
 {
@@ -10,5 +10,6 @@ namespace test.src.Test.Domain.Interfaces
     {
         Task AddComment(Comment comment);  
         Task<Comment?> GetCommentById(string commentId);
+        Task<List<Comment>> RecommendCommentsForPost(string postId, int limit);
     }
 }

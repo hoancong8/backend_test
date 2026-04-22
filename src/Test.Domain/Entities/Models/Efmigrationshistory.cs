@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace test.Models;
+namespace test.src.Test.Domain.Entities.Models;
 
 public partial class Efmigrationshistory
 {
