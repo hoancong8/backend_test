@@ -15,10 +15,12 @@ namespace test.src.Test.Api.Controllers
     {
         private readonly CreateCommentUseCase _createCommentUseCase;
         private readonly GetCommentUseCase _getCommentUseCase;
-        public CommentController(CreateCommentUseCase createCommentUseCase,GetCommentUseCase getCommentUseCase)
+        private readonly GetCommentReplyUseCase _getCommentReplyUseCase;
+        public CommentController(CreateCommentUseCase createCommentUseCase, GetCommentUseCase getCommentUseCase,GetCommentReplyUseCase getCommentReplyUseCase)
         {
             _createCommentUseCase = createCommentUseCase;
             _getCommentUseCase = getCommentUseCase;
+            _getCommentReplyUseCase = getCommentReplyUseCase;
         }
 
         [HttpPost("create-comment")]
@@ -31,11 +33,22 @@ namespace test.src.Test.Api.Controllers
         }
         [HttpPost("get-comment")]
         // [Authorize]
-        public async Task<IActionResult> GetComment(string postId,int limit)
+        public async Task<IActionResult> GetComment(string postId, int limit)
         {
 
-            var result = await _getCommentUseCase.execute(postId,limit);
+            var result = await _getCommentUseCase.execute(postId, limit);
             return new JsonResult(result);
         }
+
+        [HttpPost("get-comment-reply")]
+        // [Authorize]
+        public async Task<IActionResult> GetCommentReply(string postId, int limit,string commentId)
+        {
+
+            var result = await _getCommentReplyUseCase.execute(postId, limit,commentId);
+            return new JsonResult(result);
+        }
+
+
     }
 }

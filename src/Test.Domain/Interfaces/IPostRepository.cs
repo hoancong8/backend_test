@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
+using test.src.Test.Application.Dtos.reponse;
 using test.src.Test.Domain.Entities.Models;
 namespace test.src.Test.Domain.Interfaces
 {
@@ -8,5 +9,6 @@ namespace test.src.Test.Domain.Interfaces
     {
         Task CreatePost(Post post);
         Task<List<Post>> RecommendPostsForUser(string userId, int limit);
+        Task<List<PostReponse>> RecommendPosts(int limit);
     }
 }

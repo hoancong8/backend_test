@@ -44,6 +44,8 @@ builder.Services.AddScoped<CreatePostUseCase>();
 builder.Services.AddScoped<CreateCommentUseCase>();
 builder.Services.AddScoped<RecommendPostUseCase>();
 builder.Services.AddScoped<GetCommentUseCase>();
+builder.Services.AddScoped<GetCommentReplyUseCase>();
+builder.Services.AddScoped<RecommendPostNotLoginUseCase>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddSingleton<CloudinaryService>();
 builder.Services.AddControllers();

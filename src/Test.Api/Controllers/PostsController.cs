@@ -15,11 +15,12 @@ namespace test.src.Test.Api.Controllers
     {
         private readonly CreatePostUseCase _useCase;
         private readonly RecommendPostUseCase _rcmUseCase;
-
-        public PostsController(CreatePostUseCase useCase, RecommendPostUseCase rcmUseCase)
+        private readonly RecommendPostNotLoginUseCase _rcmNotLoginUseCase;
+        public PostsController(CreatePostUseCase useCase, RecommendPostUseCase rcmUseCase,RecommendPostNotLoginUseCase rcmNotLoginUseCase)
         {
             _useCase = useCase;
             _rcmUseCase = rcmUseCase;
+            _rcmNotLoginUseCase = rcmNotLoginUseCase;
         }
 
         [HttpPost("create-post")]
@@ -44,6 +45,13 @@ namespace test.src.Test.Api.Controllers
 
             if (!Guid.TryParse(userId, out var userIdGuid)) return Unauthorized();
             var result = await _rcmUseCase.execute(userId, 10);
+            return Ok(result);
+        }
+        [HttpPost("recommend-not-login-post")]
+        
+        public async Task<IActionResult> recommendNotLogin(int limit)
+        {
+            var result = await _rcmNotLoginUseCase.execute(10);
             return Ok(result);
         }
 

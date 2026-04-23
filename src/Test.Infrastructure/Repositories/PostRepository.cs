@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using test.src.Test.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using test.src.Test.Domain.Entities.Models;
+using test.src.Test.Application.Dtos.reponse;
 
 namespace test.src.Test.Infrastructure.Repositories
 {
@@ -23,9 +24,10 @@ namespace test.src.Test.Infrastructure.Repositories
             await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
         }
-        public async Task<List<Post>> RecommendPostsForUser(string userId, int limit)
+        public async Task<List<Post>> RecommendPostsForUser(string userId, int limit, int? lastScore)
         {
             var now = DateTime.UtcNow;
+
             var friendIds = await _context.Friendships
                 .Where(f =>
                     (f.RequesterId.ToString() == userId || f.AddresseeId.ToString() == userId)
@@ -33,34 +35,62 @@ namespace test.src.Test.Infrastructure.Repositories
                 .Select(f => f.RequesterId.ToString() == userId ? f.AddresseeId : f.RequesterId)
                 .ToListAsync();
 
-            var posts = await _context.Posts
-                .Include(p => p.User)
-                .Include(p => p.Likes)
-                .Include(p => p.Comments)
-                .Include(p => p.Postimages)
-                .Include(p => p.Postvideos)
+            var query = _context.Posts
                 .Select(p => new
                 {
                     Post = p,
 
                     Score =
-                        // 🎯 bạn bè
                         (friendIds.Contains(p.UserId) ? 100 : 0)
-
-                        // 🎯 độ mới (càng mới càng cao)
                         + (p.CreatedAt.HasValue
-                            ? 50 - EF.Functions.DateDiffHour(p.CreatedAt.Value, now)
+                            ? Math.Max(0, 50 - EF.Functions.DateDiffHour(p.CreatedAt.Value, now))
                             : 0)
+                        + p.Likes.Count() * 2
+                        + p.Comments.Count() * 3
+                });
 
-                        // 🎯 tương tác
-                        + p.Likes.Count * 2
-                        + p.Comments.Count * 3
-                })
+            // 🎯 cursor pagination
+            if (lastScore.HasValue)
+            {
+                query = query.Where(x => x.Score < lastScore.Value);
+            }
+
+            var posts = await query
                 .OrderByDescending(x => x.Score)
                 .Take(limit)
                 .Select(x => x.Post)
                 .ToListAsync();
-            // For simplicity, we just return the most recent posts excluding the user's own posts
+
+            return posts;
+        }
+
+
+        public async Task<List<PostReponse>> RecommendPosts(int limit)
+        {
+            var now = DateTime.UtcNow;
+            var posts = await _context.Posts
+            .Select(
+                p => new PostReponse
+                {
+                    Id = p.Id,
+                    Content = p.Content,
+                    CommentCount = p.Comments.Count,
+                    LikeCount = p.Likes.Count,
+                    Images = p.Postimages
+                        .Select(img => img.ImageUrl)
+                        .ToList(),
+                    Videos = p.Postvideos.Select(video => video.VideoUrl).ToList(),
+                    User = new UserDto
+                    {
+                        Id = p.User.Id.ToString(),
+                        AvatarUrl = p.User.AvatarUrl,
+                        FullName = p.User.FirstName + " " + p.User.LastName
+                    },
+                    CreatedAt = p.CreatedAt
+
+                }
+            ).OrderByDescending(p => p.CreatedAt).Take(limit).ToListAsync();
+
             return posts;
         }
     }
